@@ -1,5 +1,5 @@
 {
-  "name": "test-precommit",
+  "name": "conflict-detector",
   "version": "1.0.0",
   "description": "A precommit hook to warn you about merge conflicts introduced with other branches of your app",
   "main": "index.js",
