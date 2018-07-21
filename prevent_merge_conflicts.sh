@@ -2,7 +2,13 @@
 
 echo "Starting test branches for merge conflicts..."
 
-git stash &> /dev/null;
+IS_BRANCH_DIRTY=$(git status -s | grep -v "^?? ")
+
+if [ $IS_BRANCH_DIRTY ];
+then
+  git stash &> /dev/null;
+fi
+
 CURRENT_BRANCH=$(git rev-parse --symbolic-full-name --abbrev-ref HEAD)
 
 for branch in $(git for-each-ref --format='%(refname:short)' refs/heads/)
@@ -38,4 +44,8 @@ do
 done
 
 git checkout -f $CURRENT_BRANCH &> /dev/null;
-git stash pop &> /dev/null;
+
+if [ $IS_BRANCH_DIRTY ];
+then
+  git stash pop &> /dev/null;
+fi
