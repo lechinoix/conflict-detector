@@ -1,6 +1,6 @@
 {
   "name": "conflict-detector",
-  "version": "1.2.2",
+  "version": "1.3.2",
   "description": "A precommit hook to warn you about merge conflicts introduced with other branches of your app",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

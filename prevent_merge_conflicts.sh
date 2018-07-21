@@ -1,6 +1,7 @@
 #!/bin/bash
 
 echo "Starting test branches for merge conflicts..."
+git fetch  &> /dev/null;
 
 IS_BRANCH_DIRTY=$(git status -s | grep -v "^?? ")
 
@@ -11,7 +12,7 @@ fi
 
 CURRENT_BRANCH=$(git rev-parse --symbolic-full-name --abbrev-ref HEAD)
 
-for branch in $(git for-each-ref --format='%(refname:short)' refs/heads/)
+for branch in $(git --no-pager branch -a | sed -e 's/^\*/ /')
 do
 
   if [ $branch = $CURRENT_BRANCH ];
@@ -22,7 +23,7 @@ do
   git checkout $branch &> /dev/null;
 
   AUTHOR=$(git log -1 --pretty=format:'%an');
-  LAST_DATE_COMMIT=$(git log -1 --format=%cd | xargs date "+%Y-%m-%d %H:%M:%S") -d;
+  LAST_DATE_COMMIT=$(git log -1 --format=%cd --date=relative);
 
   echo ""
   echo "Branch name: $branch"
