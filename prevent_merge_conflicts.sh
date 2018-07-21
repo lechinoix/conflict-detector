@@ -13,13 +13,14 @@ do
     continue
   fi
 
+  git checkout $branch &> /dev/null;
+
   AUTHOR=$(git log -1 --pretty=format:'%an');
-  LAST_DATE_COMMIT=$(git log -1 --format=%cd | date "+%Y-%m-%d %H:%M:%S");
+  LAST_DATE_COMMIT=$(git log -1 --format=%cd | xargs date "+%Y-%m-%d %H:%M:%S") -d;
 
   echo ""
   echo "Branch name: $branch"
   echo "Author: $AUTHOR ($LAST_DATE_COMMIT)";
-  git checkout $branch &> /dev/null;
   git merge $CURRENT_BRANCH &> /dev/null;
   if [[ $? -eq 0 ]];
   then
