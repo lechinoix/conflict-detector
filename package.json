@@ -1,0 +1,26 @@
+{
+  "name": "test-precommit",
+  "version": "1.0.0",
+  "description": "A precommit hook to warn you about merge conflicts introduced with other branches of your app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lechinoix/conflict-detector.git"
+  },
+  "keywords": [
+    "git",
+    "conflicts",
+    "merge",
+    "postcommit",
+    "hook"
+  ],
+  "author": "Nicolas Ngomai",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lechinoix/conflict-detector/issues"
+  },
+  "homepage": "https://github.com/lechinoix/conflict-detector#readme"
+}
