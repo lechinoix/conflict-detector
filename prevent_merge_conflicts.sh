@@ -1,16 +1,26 @@
 #!/bin/bash
 
-echo "Starting test branches for merge conflicts..."
-git fetch  &> /dev/null;
-
 IS_BRANCH_DIRTY=$(git status -s | grep -v "^?? ")
+CURRENT_BRANCH=$(git rev-parse --symbolic-full-name --abbrev-ref HEAD)
+
+function restore_branch {
+  git checkout -f $CURRENT_BRANCH &> /dev/null;
+
+  if [ $IS_BRANCH_DIRTY ];
+  then
+    git stash pop &> /dev/null;
+  fi
+}
+
+trap restore_branch EXIT;
+
+echo "Starting test branches for merge conflicts..."
+git fetch &> /dev/null;
 
 if [ $IS_BRANCH_DIRTY ];
 then
   git stash &> /dev/null;
 fi
-
-CURRENT_BRANCH=$(git rev-parse --symbolic-full-name --abbrev-ref HEAD)
 
 for branch in $(git --no-pager branch -a | sed -e 's/^\*/ /')
 do
@@ -43,10 +53,3 @@ do
   fi
   git reset --hard $branch &> /dev/null;
 done
-
-git checkout -f $CURRENT_BRANCH &> /dev/null;
-
-if [ $IS_BRANCH_DIRTY ];
-then
-  git stash pop &> /dev/null;
-fi
