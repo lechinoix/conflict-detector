@@ -23,7 +23,7 @@ echo "Starting test branches for merge conflicts..."
 git fetch &> /dev/null;
 git remote update origin --prune &> /dev/null;
 
-for branch in $(git --no-pager branch -a | sed -e 's/^\*/ /')
+for branch in $(git --no-pager branch -a | sed -e 's/^\*/ /' | grep -v "remotes/origin/HEAD")
 do
 
   if [ $branch = $CURRENT_BRANCH ];
