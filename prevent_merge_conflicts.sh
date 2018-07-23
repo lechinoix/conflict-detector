@@ -16,6 +16,7 @@ trap restore_branch EXIT;
 
 echo "Starting test branches for merge conflicts..."
 git fetch &> /dev/null;
+git remote update origin --prune &> /dev/null;
 
 if [ $IS_BRANCH_DIRTY ];
 then
@@ -30,15 +31,13 @@ do
     continue
   fi
 
-  git checkout $branch &> /dev/null;
-
   AUTHOR=$(git log -1 --pretty=format:'%an');
   LAST_DATE_COMMIT=$(git log -1 --format=%cd --date=relative);
 
   echo ""
   echo "Branch name: $branch"
   echo "Author: $AUTHOR ($LAST_DATE_COMMIT)";
-  git merge $CURRENT_BRANCH &> /dev/null;
+  git merge $branch --no-ff --no-commit &> /dev/null;
   if [[ $? -eq 0 ]];
   then
     echo "Status: ✅  No conflicts detected!"
@@ -51,5 +50,5 @@ do
     fi
     echo "Status: 🚨  Conflicts, $NUMBER_OF_FILES file$PLURAL affected";
   fi
-  git reset --hard $branch &> /dev/null;
+  git merge --abort &> /dev/null;
 done
