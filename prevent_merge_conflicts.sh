@@ -4,7 +4,7 @@ IS_BRANCH_DIRTY=$(git status -s | grep -v "^?? ")
 CURRENT_BRANCH=$(git rev-parse --symbolic-full-name --abbrev-ref HEAD)
 
 function restore_branch {
-  git checkout -f $CURRENT_BRANCH &> /dev/null;
+  git reset --hard $CURRENT_BRANCH &> /dev/null;
 
   if [ $IS_BRANCH_DIRTY ];
   then
@@ -12,16 +12,16 @@ function restore_branch {
   fi
 }
 
+if [ $IS_BRANCH_DIRTY ];
+then
+  git stash &> /dev/null;
+fi
+
 trap restore_branch EXIT;
 
 echo "Starting test branches for merge conflicts..."
 git fetch &> /dev/null;
 git remote update origin --prune &> /dev/null;
-
-if [ $IS_BRANCH_DIRTY ];
-then
-  git stash &> /dev/null;
-fi
 
 for branch in $(git --no-pager branch -a | sed -e 's/^\*/ /')
 do
