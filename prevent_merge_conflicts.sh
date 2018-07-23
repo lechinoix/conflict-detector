@@ -4,7 +4,7 @@ IS_BRANCH_DIRTY=$(git status -s | grep -v "^?? ")
 CURRENT_BRANCH=$(git rev-parse --symbolic-full-name --abbrev-ref HEAD)
 
 function restore_branch {
-  git reset --hard $CURRENT_BRANCH &> /dev/null;
+  git merge --abort &> /dev/null;
 
   if [ $IS_BRANCH_DIRTY ];
   then
