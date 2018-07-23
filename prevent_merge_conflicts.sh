@@ -31,8 +31,8 @@ do
     continue
   fi
 
-  AUTHOR=$(git log -1 --pretty=format:'%an');
-  LAST_DATE_COMMIT=$(git log -1 --format=%cd --date=relative);
+  AUTHOR=$(git log $branch -1 --pretty=format:'%an');
+  LAST_DATE_COMMIT=$(git log $branch -1 --format=%cd --date=relative);
 
   echo ""
   echo "Branch name: $branch"
